@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tutorial_34_rows_and_columns_widget/LoginPage.dart';
+import 'LoginPage.dart';
+
 void main(){
   return runApp(MyApp());
 }
@@ -35,7 +36,7 @@ class MyHomePage66 extends StatelessWidget {
                 Navigator.push(
                 context,
                 MaterialPageRoute(
-                builder: (context)=>Loginpage(),
+                builder: (context)=>LoginPage(),
                 )
                 );
                 }, child: Text('Switch to Login ')

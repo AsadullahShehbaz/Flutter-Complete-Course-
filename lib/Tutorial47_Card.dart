@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tutorial_34_rows_and_columns_widget/ui_helper/util.dart';
 void main() {
   runApp(const MyApp());
 }

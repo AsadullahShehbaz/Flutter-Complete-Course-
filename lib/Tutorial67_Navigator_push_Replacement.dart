@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tutorial_34_rows_and_columns_widget/Splash_Screen.dart';
+import 'Splash_Screen.dart';
 void main(){
   return runApp(MyApp());
 }
