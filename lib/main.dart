@@ -1,70 +1,89 @@
 import 'package:flutter/material.dart';
-void main(){
+import 'package:shared_preferences/shared_preferences.dart';
+
+void main() {
   runApp(MyApp());
 }
-class MyApp extends StatelessWidget{
+
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return MaterialApp(
-      title:'List Wheel Scroll View',
-      home: MyHomePage(),
+      title: 'List Wheel Scroll View',
+      theme: ThemeData(
+        primarySwatch: Colors.blue, // Set the primary color to blue
+      ),
+      home: const MyHomePage(),
     );
   }
 }
-class MyHomePage extends StatefulWidget{
+
+class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
-class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin{
 
-  late Animation animation;
-  late AnimationController animationController;
-  var array = [150,200,250,300,350];
+class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin {
+  var nameController = TextEditingController();
+  static const String KEYNAME = 'name';
+  var nameValue = 'No Name Saved';
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    animationController = AnimationController(vsync:this,duration:Duration(seconds:4),lowerBound:0.5);
-    //animation = Tween(begin:0.0,end:1.0).animate(animationController);
-
-    animationController.addListener((){
-      setState((){});
-    });
-    animationController.forward();
+    getValue();
   }
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar:AppBar(
-        title:Text('Lec 80 Ripple Animation'),
+      appBar: AppBar(
+        title: const Text('Lec 81 Shared Preference'),
       ),
-      body:Center(
-        child: Stack(
-          alignment:Alignment.center,
-          children: [
-            BuildMyContainer(array[0]),
-            BuildMyContainer(array[1]),
-            BuildMyContainer(array[2]),
-            BuildMyContainer(array[3]),
-            BuildMyContainer(array[4]),
-            Icon(Icons.add_call,color: Colors.orangeAccent,size: 40,)
-
-          ],
+      body: Container(
+        child: Center(
+          child: SizedBox(
+            width: 200,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextField(
+                  controller: nameController,
+                  decoration: InputDecoration(
+                    label: const Text('Name'),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(22),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 11),
+                ElevatedButton(
+                  onPressed: () async {
+                    var name = nameController.text.toString();
+                    var prefs = await SharedPreferences.getInstance();
+                    prefs.setString(KEYNAME, name);
+                  },
+                  child: const Text('Save'),
+                ),
+                const SizedBox(height: 11),
+                 Text(nameValue),
+              ],
+            ),
+          ),
         ),
       ),
     );
   }
-  Widget BuildMyContainer(radius){
-    return Container(
-      width:radius*animationController.value,
-      height:radius*animationController.value,
-      decoration:BoxDecoration(
-          shape:BoxShape.circle,
-          color:Colors.blue.withOpacity(1.0 - animationController.value)
-      ),
-    );
+  void getValue() async{
+    // You can implement the logic to retrieve the saved value here
+    var prefs = await SharedPreferences.getInstance();
+    var getName = prefs.getString(KEYNAME);
+
+    nameValue = getName ?? 'No Value Saved';
+
+    setState((){});
   }
 }
