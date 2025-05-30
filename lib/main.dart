@@ -1,6 +1,9 @@
 // Importing required packages
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart'; // For local data storage (key-value pair)
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'LoginPage.dart';
+import 'Splash_Screen.dart'; // For local data storage (key-value pair)
 
 // The main() function is the entry point of the Flutter app
 void main() {
@@ -14,25 +17,26 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'List Wheel Scroll View',
+      debugShowCheckedModeBanner:false,
+      title: 'Lec 82 Shared Preference',
       theme: ThemeData(
-        primarySwatch: Colors.blue, // Theme color for the app
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue).copyWith(background: Theme.of(context).colorScheme.inversePrimary), // Theme color for the app
       ),
-      home: const MyHomePage(), // Setting the home screen
+      home: SplashScreen(), // Setting the home screen
     );
   }
 }
 
 // Stateful widget to allow changes when data is saved or loaded
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+class MyHomePage82 extends StatefulWidget {
+  const MyHomePage82({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyHomePage82> createState() => _MyHomePageState();
 }
 
 // The state class for MyHomePage
-class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin {
+class _MyHomePageState extends State<MyHomePage82> with SingleTickerProviderStateMixin {
   var nameController = TextEditingController(); // Controller for the text input field
 
   static const String KEYNAME = 'name'; // Key used to store and retrieve name from SharedPreferences
@@ -42,7 +46,6 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
   @override
   void initState() {
     super.initState();
-    getValue(); // Load stored name (if any) when the app starts
   }
 
   @override
@@ -92,14 +95,4 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
     );
   }
 
-  // Method to get the stored value from SharedPreferences
-  void getValue() async {
-    var prefs = await SharedPreferences.getInstance(); // Access SharedPreferences
-    var getName = prefs.getString(KEYNAME); // Retrieve the value using the key
-
-    // If value exists, set it to nameValue, otherwise use fallback
-    nameValue = getName ?? 'No Value Saved';
-
-    setState(() {}); // Rebuild the UI to reflect the loaded name
-  }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import 'Splash_Screen.dart';
 import 'main.dart';
 class LoginPage extends StatefulWidget {
   @override
@@ -77,13 +79,16 @@ class _MyHomePageState extends State<LoginPage> {
                       borderRadius: BorderRadius.circular(25), // Rounded corners
                     ),
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async{
                         String userEmail = email_Text.text.toString();
                         String userPassword = password_Text.text;
-                        Navigator.push(
+
+                        var sharedPref = await SharedPreferences.getInstance();
+                        sharedPref.setBool(SplashScreenState.KEYLOGIN,true);
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context)=>MyHomePage(),
+                                builder: (context)=>MyHomePage82(),
                             )
                         );
                       },
